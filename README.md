@@ -1,3 +1,3 @@
 # MiniCompilador
 
-Este projeto tem como finalidade a construção de um mini compilador capaz de reconhecer, analisar e traduzir uma linguagem de expressões matemáticas com suporte a funções definidas pelo usuário, variáveis, operadores aritméticos e escopo simples. O projeto será dividido em duas partes: a primeira focada na análise léxica e sintática, e a segunda na análise semântica e geração de código intermediário. O trabalho será realizado em grupos de até 6 alunos, exigindo conhecimentos consolidados em estruturas de dados, teoria da computação, linguagens formais, e programação de sistemas.
+Este projeto tem como finalidade a construção de um mini compilador capaz de reconhecer, analisar e traduzir uma linguagem de expressões matemáticas com suporte a funções definidas pelo usuário, variáveis, operadores aritméticos e escopo simples.
