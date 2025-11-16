@@ -28,8 +28,8 @@ int main() {
     // Mostra os tokens
     std::cout << "\nTokens:\n";
     for (auto &t : tokens) {
-        std::cout << tokenTypeToString(t.type) << "('" << t.value << "') "
-                  << "line:" << t.line << " col:" << t.column << "\n";
+        std::cout << "line:" << t.line << " col:" << t.column << " "
+         << tokenTypeToString(t.type) << "('" << t.value << "')" << "\n";
     }
 
     // Parser
