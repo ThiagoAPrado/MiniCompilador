@@ -7,61 +7,10 @@ Para realizar a operação, você precisará de:
 - g++ com suporte ao C++17 ou maior
 - (Recomendado) make para facilitar a compilação
 
-Abaixo estão as instruções para instalar essas dependências.
-
-## Requisitos Linux
-
-No Linux, o uso do make é a forma preferida e mais simples: 
-
-```bash
-sudo apt update
-sudo apt install g++ make
-```
-
-Verifique:
-
-```bash
-g++ --version
-make --version
-```
-
-Execute:
+Compile cada arquivo .cpp no diretório `./MiniCompilador/src` ou use o seguinte comando:
 
 ```bash
 make run
-```
-
-## Requisitos Windows
-
-A forma oficialmente recomendada para Windows é usar MSYS2, pois oferece suporte completo a make e g++.
-
-Instalação:
-
-- Baixe e instale o MSYS2: https://www.msys2.org/
-- Abra MSYS2 MinGW64
-- Instale as ferramentas:
-
-```bash
-pacman -S mingw-w64-ucrt-x86_64-gcc make
-```
-
-- Configure a variável do sistema Path adicionando o caminho da instalação (por padrão): `C:\msys64\ucrt64\bin`
-
-## Run
-
-Para compilar e executar o código, rode:
-
-```bash
-make run
-```
-
-O comando acima irá compilar todos os arquivos .cpp localizados na pasta src/ e executar o binário gerado que será armazenado em `./bin`  e `./build`.
-
-Caso prefira executar manual, rode:
-
-```
-g++ -std=c++17 src/*.cpp -Iinclude -o mini_compilador
-./mini_compilador
 ```
 
 # Mini Compilador
