@@ -2,8 +2,7 @@
 #include <iostream>
 
 SemanticAnalyzer::SemanticAnalyzer() {
-    // iniciar com escopo global
-    pushScope();
+    pushScope(); // escopo global
 }
 
 void SemanticAnalyzer::pushScope() {
@@ -15,7 +14,6 @@ void SemanticAnalyzer::popScope() {
 }
 
 void SemanticAnalyzer::declareVariable(const std::string &name) {
-    if (variableScopes.empty()) pushScope();
     variableScopes.back()[name] = true;
 }
 
@@ -26,8 +24,15 @@ bool SemanticAnalyzer::isVariableDeclared(const std::string &name) const {
     return false;
 }
 
-void SemanticAnalyzer::declareFunction(const std::string &name, int paramCount) {
-    functions[name] = FunctionInfo{paramCount};
+void SemanticAnalyzer::registerFunction(const FuncDeclNode *func) {
+    if (functions.count(func->name)) {
+        throw SemanticError("função '" + func->name + "' já declarada.");
+    }
+
+    functions[func->name] = FunctionInfo{
+        func,
+        static_cast<int>(func->params.size())
+    };
 }
 
 bool SemanticAnalyzer::isFunctionDeclared(const std::string &name) const {
@@ -40,55 +45,54 @@ int SemanticAnalyzer::getFunctionParamCount(const std::string &name) const {
     return it->second.paramCount;
 }
 
-void SemanticAnalyzer::analyze(const std::vector<NodePtr> &ast) {
-    for (const auto &node : ast) {
-        analyzeNode(node);
-    }
-}
-
-/* Dispatch para o tipo concreto do Node (usamos dynamic_cast) */
 void SemanticAnalyzer::analyzeNode(const NodePtr &node) {
     if (!node) return;
 
     if (auto n = dynamic_cast<const AssignNode*>(node.get())) {
         analyzeAssign(n);
+
     } else if (auto n = dynamic_cast<const FuncDeclNode*>(node.get())) {
         analyzeFuncDecl(n);
+
     } else if (auto n = dynamic_cast<const BinaryOpNode*>(node.get())) {
         analyzeBinary(n);
+
     } else if (auto n = dynamic_cast<const VarNode*>(node.get())) {
         analyzeVar(n);
+
     } else if (auto n = dynamic_cast<const FuncCallNode*>(node.get())) {
         analyzeFuncCall(n);
-    } else if (auto n = dynamic_cast<const NumberNode*>(node.get())) {
-        // nada a fazer
-        (void)n;
+
+    } else if (dynamic_cast<const NumberNode*>(node.get())) {
+        return; // número não causa nada
+
     } else {
-        // outros tipos que você pode adicionar depois
+        // futuras extensões
     }
 }
 
 void SemanticAnalyzer::analyzeAssign(const AssignNode *n) {
-    // primeiro analisa a expressão do lado direito
     analyzeNode(n->expr);
-    // depois declara a variável no escopo atual
     declareVariable(n->name);
 }
 
 void SemanticAnalyzer::analyzeFuncDecl(const FuncDeclNode *n) {
-    // registrar a função (antes de analisar o corpo, para permitir chamadas recursivas)
-    declareFunction(n->name, static_cast<int>(n->params.size()));
-
-    // novo escopo para a função
     pushScope();
 
-    // declarar parâmetros no escopo local
-    for (const auto &p : n->params) declareVariable(p);
+    std::unordered_map<std::string, bool> seen;
 
-    // analisar o corpo (body)
+    for (const std::string &p : n->params) {
+        if (seen.count(p)) {
+            throw SemanticError(
+                "parâmetro duplicado '" + p + "' na função '" + n->name + "'"
+            );
+        }
+        seen[p] = true;
+        declareVariable(p);
+    }
+
     analyzeNode(n->body);
 
-    // sair do escopo local
     popScope();
 }
 
@@ -107,14 +111,31 @@ void SemanticAnalyzer::analyzeFuncCall(const FuncCallNode *n) {
     if (!isFunctionDeclared(n->name)) {
         throw SemanticError("função '" + n->name + "' não declarada.");
     }
+
     int expected = getFunctionParamCount(n->name);
     int received = static_cast<int>(n->args.size());
+
     if (expected != received) {
         throw SemanticError(
-            "função '" + n->name + "' esperava " + std::to_string(expected) +
-            " argumentos, recebeu " + std::to_string(received) + "."
+            "função '" + n->name + "' esperava " +
+            std::to_string(expected) + " argumentos, recebeu " +
+            std::to_string(received) + "."
         );
     }
-    // verificar argumentos recursivamente
-    for (const auto &arg : n->args) analyzeNode(arg);
+
+    for (const auto &arg : n->args)
+        analyzeNode(arg);
 }
+
+void SemanticAnalyzer::analyze(const std::vector<NodePtr> &ast) {
+    for (const auto &node : ast) {
+        if (auto f = dynamic_cast<const FuncDeclNode*>(node.get())) {
+            registerFunction(f);
+        }
+    }
+
+    for (const auto &node : ast) {
+        analyzeNode(node);
+    }
+}
+

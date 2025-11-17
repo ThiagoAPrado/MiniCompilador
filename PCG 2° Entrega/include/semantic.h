@@ -14,28 +14,25 @@ public:
 };
 
 struct FunctionInfo {
+    const FuncDeclNode* decl;  
     int paramCount;
 };
 
 class SemanticAnalyzer {
 private:
-    // pilha de escopos: cada escopo mapeia nome -> declarado (bool)
     std::vector<std::unordered_map<std::string, bool>> variableScopes;
-
-    // tabela de funções (nome -> número de parâmetros)
     std::unordered_map<std::string, FunctionInfo> functions;
 
-    // helpers
     void pushScope();
     void popScope();
+
     void declareVariable(const std::string &name);
     bool isVariableDeclared(const std::string &name) const;
 
-    void declareFunction(const std::string &name, int paramCount);
+    void registerFunction(const FuncDeclNode *func);
     bool isFunctionDeclared(const std::string &name) const;
     int getFunctionParamCount(const std::string &name) const;
 
-    // análise por tipo de nó
     void analyzeNode(const NodePtr &node);
     void analyzeAssign(const AssignNode *n);
     void analyzeFuncDecl(const FuncDeclNode *n);
