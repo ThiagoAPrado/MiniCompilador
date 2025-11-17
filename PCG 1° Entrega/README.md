@@ -37,14 +37,15 @@ A forma oficialmente recomendada para Windows é usar MSYS2, pois oferece suport
 
 Instalação:
 
-- Baixe o instalador: https://www.msys2.org/
+- Baixe e instale o MSYS2: https://www.msys2.org/
 - Abra MSYS2 MinGW64
 - Instale as ferramentas:
 
 ```bash
-pacman -Syu
-pacman -S mingw-w64-x86_64-gcc make
+pacman -S mingw-w64-ucrt-x86_64-gcc make
 ```
+
+- Configure a variável do sistema Path adicionando o caminho da instalação (por padrão): `C:\msys64\ucrt64\bin`
 
 ## Run
 
