@@ -1,0 +1,5 @@
+funcao quadrado(x) = x * x;
+a = 5;
+b = 3.14;
+c = a + b;
+d = quadrado(c);
