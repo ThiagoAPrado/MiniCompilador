@@ -46,7 +46,7 @@
     funcao b(x) = a(x)
 
 14. Função mais complexa 
-    funcao calc(a, b, c) = (a + b) * c / (a - b) 
+    funcao calc(a, b, c) = (a + b) * c / (a - b)
     x = calc(10, 2, 3)
 
 15. Expressões com potência 
