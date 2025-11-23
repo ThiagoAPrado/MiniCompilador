@@ -11,11 +11,9 @@ void CodeGenerator::generateCode(const std::vector<NodePtr> &ast) {
     codeLines.clear();
     tempCounter = 0;
     
-    // REMOVA ESTA LINHA: codeLines.push_back("; === CÓDIGO DE TRÊS ENDEREÇOS ===");
-    // E DEIXE APENAS:
     codeLines.push_back("=== CÓDIGO INTERMEDIÁRIO (TRÊS ENDEREÇOS) ===");
     
-    // O resto do código permanece igual...
+    
     for (const auto &node : ast) {
         if (auto funcDecl = dynamic_cast<FuncDeclNode*>(node.get())) {
             processFunctionDeclaration(funcDecl);
@@ -34,10 +32,10 @@ void CodeGenerator::generateCode(const std::vector<NodePtr> &ast) {
         }
     }
     
-    codeLines.push_back(""); // linha final em branco
+    codeLines.push_back(""); 
 }
 
-// O resto do arquivo permanece igual...
+
 void CodeGenerator::processFunctionDeclaration(FuncDeclNode* funcDecl) {
     codeLines.push_back("func_" + funcDecl->name + ":");
     
@@ -51,7 +49,7 @@ void CodeGenerator::processFunctionDeclaration(FuncDeclNode* funcDecl) {
     }
     
     codeLines.push_back("end_" + funcDecl->name + ":");
-    codeLines.push_back(""); // linha em branco
+    codeLines.push_back(""); 
 }
 
 std::string CodeGenerator::processNode(const Node* node) {
@@ -93,7 +91,7 @@ std::string CodeGenerator::processNode(const Node* node) {
 }
 
 void CodeGenerator::printCode() const {
-    std::cout << "\n"; // REMOVA o título duplicado aqui também
+    std::cout << "\n"; 
     for (const auto &line : codeLines) {
         std::cout << line << std::endl;
     }

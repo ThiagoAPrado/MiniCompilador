@@ -4,7 +4,6 @@
 
 Parser::Parser(const std::vector<Token>& toks) : tokens(toks), idx(0) {}
 
-
 std::vector<NodePtr> Parser::parseAll() {
     std::vector<NodePtr> statements;
 
@@ -43,7 +42,6 @@ void Parser::expect(TokenType t, const std::string &msg) {
     advance();
 }
 
-// Top-level: in this simple example parse a single statement (decl or assign)
 NodePtr Parser::parse() {
     if (current().type == TokenType::END_OF_FILE) return nullptr;
     NodePtr n = parseProgram();
@@ -59,11 +57,11 @@ NodePtr Parser::parseProgram() {
         return parseDeclaration();
     }
     else if (current().type == TokenType::ID) {
-        // could be assignment or expression; we check next token
+        
         if (tokens.size() > idx+1 && tokens[idx+1].type == TokenType::ATRIB) {
             return parseAssignment();
         } else {
-            // For now, treat a bare expression as an expression statement
+            
             NodePtr expr = parseExpression();
             return expr;
         }
@@ -73,7 +71,7 @@ NodePtr Parser::parseProgram() {
 }
 
 NodePtr Parser::parseDeclaration() {
-    // 'funcao' ID '(' params ')' '=' expr
+    
     expect(TokenType::FUNC, "'funcao' keyword");
     if (current().type != TokenType::ID) throw std::runtime_error("Expected function name after 'funcao'");
     std::string name = current().value;
@@ -88,7 +86,7 @@ NodePtr Parser::parseDeclaration() {
 
 std::vector<std::string> Parser::parseParameters() {
     std::vector<std::string> out;
-    if (current().type == TokenType::RPAREN) return out; // empty
+    if (current().type == TokenType::RPAREN) return out; 
     if (current().type != TokenType::ID) throw std::runtime_error("Expected parameter name");
     out.push_back(current().value);
     advance();
@@ -109,10 +107,6 @@ NodePtr Parser::parseAssignment() {
     return std::make_unique<AssignNode>(name, std::move(expr));
 }
 
-// Expression parsing with precedence:
-// expression -> term ((+|-) term)*
-// term -> power ((*|/) power)*
-// power -> factor ('^' power)?   // right-associative
 NodePtr Parser::parseExpression() {
     NodePtr node = parseTerm();
     while (current().type == TokenType::OP_ARIT && (current().value == "+" || current().value == "-")) {
@@ -140,7 +134,7 @@ NodePtr Parser::parsePower() {
     if (current().type == TokenType::OP_ARIT && current().value == "^") {
         std::string op = current().value;
         advance();
-        NodePtr right = parsePower(); // right-associative
+        NodePtr right = parsePower(); 
         node = std::make_unique<BinaryOpNode>(op, std::move(node), std::move(right));
     }
     return node;
@@ -148,7 +142,7 @@ NodePtr Parser::parsePower() {
 
 std::vector<NodePtr> Parser::parseArguments() {
     std::vector<NodePtr> out;
-    if (current().type == TokenType::RPAREN) return out; // empty
+    if (current().type == TokenType::RPAREN) return out; 
     out.push_back(parseExpression());
     while (accept(TokenType::COMMA)) {
         out.push_back(parseExpression());
@@ -165,7 +159,7 @@ NodePtr Parser::parseFactor() {
         std::string name = current().value;
         advance();
         if (accept(TokenType::LPAREN)) {
-            // function call
+            
             std::vector<NodePtr> args = parseArguments();
             expect(TokenType::RPAREN, "')' after function arguments");
             return std::make_unique<FuncCallNode>(name, std::move(args));

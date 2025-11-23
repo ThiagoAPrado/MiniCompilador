@@ -6,7 +6,6 @@
 #include <vector>
 #include <iostream>
 
-// Adicione este enum para tipos
 enum class Type {
     INT,
     FLOAT,
@@ -17,14 +16,14 @@ inline std::string typeToString(Type t) {
     switch (t) {
         case Type::INT: return "int";
         case Type::FLOAT: return "float";
-        default: return "";  // Retorna string vazia para UNKNOWN
+        default: return "";
     }
 }
 
 struct Node {
     virtual ~Node() = default;
     virtual void prettyPrint(int indent=0) const = 0;
-    Type type = Type::UNKNOWN;  // Adicione informação de tipo
+    Type type = Type::UNKNOWN;
 };
 
 using NodePtr = std::unique_ptr<Node>;
@@ -36,7 +35,7 @@ inline void printIndent(int n) {
 struct NumberNode : Node {
     std::string value;
     NumberNode(const std::string &v): value(v) {
-        // Detecta tipo baseado na presença de ponto
+
         type = (v.find('.') != std::string::npos) ? Type::FLOAT : Type::INT;
     }
     void prettyPrint(int indent=0) const override {

@@ -2,7 +2,7 @@
 #include <iostream>
 
 SemanticAnalyzer::SemanticAnalyzer() {
-    pushScope(); // escopo global
+    pushScope(); 
 }
 
 void SemanticAnalyzer::pushScope() {
@@ -37,8 +37,6 @@ void SemanticAnalyzer::registerFunction(const FuncDeclNode *func) {
         throw SemanticError("função '" + func->name + "' já declarada.");
     }
 
-    // Determina tipo de retorno da função analisando o corpo
-    // Como não podemos modificar, vamos apenas verificar
     Type returnType = Type::UNKNOWN;
     if (auto num = dynamic_cast<const NumberNode*>(func->body.get())) {
         returnType = num->type;
@@ -88,7 +86,7 @@ Type SemanticAnalyzer::analyzeNode(NodePtr &node) {
 Type SemanticAnalyzer::analyzeAssign(AssignNode *n) {
     Type exprType = analyzeNode(n->expr);
     declareVariable(n->name, exprType);
-    // Não modificamos n->type pois é const
+    
     return exprType;
 }
 
@@ -105,7 +103,7 @@ Type SemanticAnalyzer::analyzeFuncDecl(FuncDeclNode *n) {
     }
 
     Type returnType = analyzeNode(n->body);
-    // Não modificamos n->type pois é const
+    
 
     popScope();
     return returnType;
@@ -116,7 +114,7 @@ Type SemanticAnalyzer::analyzeBinary(BinaryOpNode *n) {
     Type rightType = analyzeNode(n->right);
     
     Type resultType = checkBinaryOpTypes(n->op, leftType, rightType);
-    // Não modificamos n->type pois é const
+    
     return resultType;
 }
 
@@ -126,7 +124,7 @@ Type SemanticAnalyzer::analyzeVar(VarNode *n) {
     }
     
     Type varType = getVariableType(n->name);
-    // Não modificamos n->type pois é const
+    
     return varType;
 }
 
@@ -145,27 +143,27 @@ Type SemanticAnalyzer::analyzeFuncCall(FuncCallNode *n) {
                            std::to_string(received) + ".");
     }
 
-    // Analisa tipos dos argumentos
+    
     for (auto &arg : n->args) {
         analyzeNode(arg);
     }
 
-    // Não modificamos n->type pois é const
+    
     return funcInfo.returnType;
 }
 
 Type SemanticAnalyzer::analyzeNumber(const NumberNode *n) {
-    // O tipo já é determinado na construção do NumberNode
+    
     return n->type;
 }
 
 Type SemanticAnalyzer::checkBinaryOpTypes(const std::string &op, Type left, Type right) {
-    // Regras de tipo para operadores
+    
     if (left == Type::UNKNOWN || right == Type::UNKNOWN) {
         return Type::UNKNOWN;
     }
     
-    // Para operadores aritméticos, promove para float se algum operando for float
+    
     if (op == "+" || op == "-" || op == "*" || op == "/" || op == "^") {
         if (left == Type::FLOAT || right == Type::FLOAT) {
             return Type::FLOAT;
@@ -177,14 +175,13 @@ Type SemanticAnalyzer::checkBinaryOpTypes(const std::string &op, Type left, Type
 }
 
 void SemanticAnalyzer::analyze(std::vector<NodePtr> &ast) {
-    // Primeira passada: registrar funções
+    
     for (const auto &node : ast) {
         if (auto f = dynamic_cast<const FuncDeclNode*>(node.get())) {
             registerFunction(f);
         }
     }
 
-    // Segunda passada: análise completa
     for (auto &node : ast) {
         analyzeNode(node);
     }

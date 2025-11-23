@@ -17,24 +17,19 @@ private:
     bool acceptValue(TokenType t, const std::string &val);
     void expect(TokenType t, const std::string &msg);
 
-    // grammar functions
-    NodePtr parseProgram();         // parse a single top-level statement (declaration or assignment)
-    NodePtr parseDeclaration();     // 'funcao' ID '(' params ')' '=' expr
-    NodePtr parseAssignment();      // ID '=' expr
-    NodePtr parseExpression();      // parse + -
-    NodePtr parseTerm();            // parse * /
-    NodePtr parsePower();           // parse ^ (right-assoc)
-    NodePtr parseFactor();          // NUM | ID | '(' expr ')' | ID '(' args ')'
+    NodePtr parseProgram();       
+    NodePtr parseDeclaration();   
+    NodePtr parseAssignment();    
+    NodePtr parseExpression();    
+    NodePtr parseTerm();          
+    NodePtr parsePower();         
+    NodePtr parseFactor();        
     std::vector<std::string> parseParameters();
     std::vector<NodePtr> parseArguments();
 
 public:
     Parser(const std::vector<Token>& toks);
-
-    // Parse uma única instrução (como antes)
     NodePtr parse(); 
-
-    // Parse todas as instruções até EOF
     std::vector<NodePtr> parseAll(); 
 };
 

@@ -11,22 +11,19 @@
 int main() {
     std::cout << "Digite o código da linguagem (uma linha por vez, termine com linha vazia):\n";
 
-    // Lê múltiplas linhas do usuário
     std::stringstream buffer;
     std::string linha;
 
     while (true) {
         std::getline(std::cin, linha);
-        if (linha.empty()) break; // linha vazia termina a entrada
+        if (linha.empty()) break; 
         buffer << linha << '\n';
     }
 
     std::string codigo = buffer.str();
 
-    // Mostra o código recebido
     std::cout << "\nCódigo recebido:\n" << codigo << "\n";
 
-    // Lexer
     Lexer lexer(codigo);
     auto tokens = lexer.tokenize();
 
@@ -37,7 +34,6 @@ int main() {
                   << "('" << t.value << "')\n";
     }
 
-    // Parser
     Parser parser(tokens);
     std::vector<NodePtr> astList;
 
@@ -54,7 +50,6 @@ int main() {
         return 1;
     }
 
-    // Semântica
     try {
         SemanticAnalyzer sem;
         sem.analyze(astList);
@@ -65,7 +60,6 @@ int main() {
         return 1;
     }
 
-    // Geração de código/execução de código
     try {
     CodeGenerator codegen;
     codegen.generateCode(astList);

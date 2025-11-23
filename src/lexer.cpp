@@ -69,7 +69,6 @@ std::vector<Token> Lexer::tokenize() {
                     tokens.push_back({TokenType::COMMA, ",", tokLine, tokCol});
                     break;
                 default:
-                    // unknown -> consume as invalid token
                     {
                         std::string s(1, get());
                         tokens.push_back({TokenType::INVALID, s, tokLine, tokCol});

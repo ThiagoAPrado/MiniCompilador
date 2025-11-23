@@ -6,7 +6,6 @@
 #include <string>
 #include <iostream>
 
-// Versão simplificada - sem struct complexa
 class CodeGenerator {
 private:
     std::vector<std::string> codeLines;
@@ -20,7 +19,7 @@ public:
     CodeGenerator();
     void generateCode(const std::vector<NodePtr> &ast);
     void printCode() const;
-    const std::vector<std::string>& getCodeLines() const { return codeLines; } // NOVO
+    const std::vector<std::string>& getCodeLines() const { return codeLines; }
 };
 
 #endif

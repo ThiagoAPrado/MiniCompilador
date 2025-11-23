@@ -40,19 +40,19 @@ private:
     bool isFunctionDeclared(const std::string &name) const;
     FunctionInfo getFunctionInfo(const std::string &name) const;
 
-    Type analyzeNode(NodePtr &node);  // Mude para referência não-const
-    Type analyzeAssign(AssignNode *n);  // Mude para ponteiro não-const
-    Type analyzeFuncDecl(FuncDeclNode *n);  // Mude para ponteiro não-const
-    Type analyzeBinary(BinaryOpNode *n);  // Mude para ponteiro não-const
-    Type analyzeVar(VarNode *n);  // Mude para ponteiro não-const
-    Type analyzeFuncCall(FuncCallNode *n);  // Mude para ponteiro não-const
+    Type analyzeNode(NodePtr &node);
+    Type analyzeAssign(AssignNode *n);
+    Type analyzeFuncDecl(FuncDeclNode *n);
+    Type analyzeBinary(BinaryOpNode *n);
+    Type analyzeVar(VarNode *n);
+    Type analyzeFuncCall(FuncCallNode *n);
     Type analyzeNumber(const NumberNode *n);
 
     Type checkBinaryOpTypes(const std::string &op, Type left, Type right);
 
 public:
     SemanticAnalyzer();
-    void analyze(std::vector<NodePtr> &ast);  // Mude para referência não-const
+    void analyze(std::vector<NodePtr> &ast);
 };
 
-#endif // SEMANTIC_H
+#endif
