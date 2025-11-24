@@ -22,12 +22,12 @@ int main() {
 
     std::string codigo = buffer.str();
 
-    std::cout << "\nCódigo recebido:\n" << codigo << "\n";
+    std::cout << "\n+++ CÓDIGO RECEBIDO +++\n" << codigo << "\n";
 
     Lexer lexer(codigo);
     auto tokens = lexer.tokenize();
 
-    std::cout << "\nTokens:\n";
+    std::cout << "\n=== TOKENS ===\n";
     for (auto &t : tokens) {
         std::cout << "line:" << t.line << " col:" << t.column << " "
                   << tokenTypeToString(t.type)
@@ -40,7 +40,7 @@ int main() {
     try {
         astList = parser.parseAll();
 
-        std::cout << "\nAST:\n";
+        std::cout << "\n=== AST (Abstract Syntax Tree) ===\n";
         for (auto &n : astList) {
             n->prettyPrint();
         }

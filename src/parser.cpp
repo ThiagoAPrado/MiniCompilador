@@ -130,7 +130,7 @@ NodePtr Parser::parseTerm() {
 }
 
 NodePtr Parser::parsePower() {
-    NodePtr node = parseFactor();
+    NodePtr node = parseUnary();
     if (current().type == TokenType::OP_ARIT && current().value == "^") {
         std::string op = current().value;
         advance();
@@ -138,6 +138,19 @@ NodePtr Parser::parsePower() {
         node = std::make_unique<BinaryOpNode>(op, std::move(node), std::move(right));
     }
     return node;
+}
+
+NodePtr Parser::parseUnary() {
+    if (current().type == TokenType::OP_ARIT && current().value == "-") {
+        std::string op = current().value;
+        advance();
+        NodePtr operand = parseUnary();
+        
+        auto zeroNode = std::make_unique<NumberNode>("0");
+        return std::make_unique<BinaryOpNode>(op, std::move(zeroNode), std::move(operand));
+    }
+    
+    return parseFactor();
 }
 
 std::vector<NodePtr> Parser::parseArguments() {
@@ -152,7 +165,8 @@ std::vector<NodePtr> Parser::parseArguments() {
 
 NodePtr Parser::parseFactor() {
     if (current().type == TokenType::NUM) {
-        std::string v = current().value; advance();
+        std::string v = current().value; 
+        advance();
         return std::make_unique<NumberNode>(v);
     }
     else if (current().type == TokenType::ID) {

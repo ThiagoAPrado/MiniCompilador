@@ -32,22 +32,39 @@ std::vector<Token> Lexer::tokenize() {
 
         if (isalpha((unsigned char)c)) {
             std::string id;
-            while (isalnum((unsigned char)peek())) id += get();
+            while (isalnum((unsigned char)peek()) || peek() == '_') id += get();
             TokenType type = (id == "funcao") ? TokenType::FUNC : TokenType::ID;
             tokens.push_back({type, id, tokLine, tokCol});
         }
-        else if (isdigit((unsigned char)c)) {
+        else if (isdigit((unsigned char)c) || (c == '-' && isdigit(source[pos + 1]))) {
             std::string num;
             bool dotSeen = false;
+            bool isNegative = false;
+            
+            if (c == '-') {
+                isNegative = true;
+                num += get();
+            }
+            
             while (isdigit((unsigned char)peek()) || (!dotSeen && peek() == '.')) {
                 if (peek() == '.') dotSeen = true;
                 num += get();
             }
-            tokens.push_back({TokenType::NUM, num, tokLine, tokCol});
+            
+            if (isNegative && num.length() == 1) {
+                tokens.push_back({TokenType::OP_ARIT, "-", tokLine, tokCol});
+            } else {
+                tokens.push_back({TokenType::NUM, num, tokLine, tokCol});
+            }
         }
         else {
             switch (c) {
-                case '+': case '-': case '*': case '/': case '^': {
+                case '+': case '*': case '/': case '^': {
+                    std::string s(1, get());
+                    tokens.push_back({TokenType::OP_ARIT, s, tokLine, tokCol});
+                    break;
+                }
+                case '-': {
                     std::string s(1, get());
                     tokens.push_back({TokenType::OP_ARIT, s, tokLine, tokCol});
                     break;

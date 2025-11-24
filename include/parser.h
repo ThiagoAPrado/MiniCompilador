@@ -17,13 +17,14 @@ private:
     bool acceptValue(TokenType t, const std::string &val);
     void expect(TokenType t, const std::string &msg);
 
-    NodePtr parseProgram();       
-    NodePtr parseDeclaration();   
-    NodePtr parseAssignment();    
-    NodePtr parseExpression();    
-    NodePtr parseTerm();          
-    NodePtr parsePower();         
-    NodePtr parseFactor();        
+    NodePtr parseProgram();
+    NodePtr parseDeclaration();
+    NodePtr parseAssignment();
+    NodePtr parseExpression();
+    NodePtr parseTerm();
+    NodePtr parsePower();
+    NodePtr parseUnary();
+    NodePtr parseFactor();
     std::vector<std::string> parseParameters();
     std::vector<NodePtr> parseArguments();
 

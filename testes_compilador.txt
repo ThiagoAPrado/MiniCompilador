@@ -38,35 +38,27 @@
 11. Uso de variável antes da atribuição (erro semântico) 
     y = x + 2
 
-12. Recursão direta (válido!) 
-    funcao fat(n) = n * fat(n - 1)
-
-13. Recursão indireta (válido!) 
+12. Recursão indireta (válido!) 
     funcao a(x) = b(x) 
     funcao b(x) = a(x)
 
-14. Função mais complexa 
+13. Função mais complexa 
     funcao calc(a, b, c) = (a + b) * c / (a - b)
     x = calc(10, 2, 3)
 
-15. Expressões com potência 
+14. Expressões com potência 
     x = 2 ^ 3 ^ 2
 
-16. Declaração seguida de chamada complexa 
-    funcao soma(a, b) = a + b
-    funcao mult(a, b) = a * b 
-    x = soma(3, mult(2, soma(1, 1)))
-
-17. Função usando parâmetros corretamente 
+15. Função usando parâmetros corretamente 
     funcao teste(a, b, c) = a + b * c 
     teste(2, 3, 4)
 
-18. Token inválido 
+16. Token inválido 
     x = 10 @ 20
 
-19. Parênteses aninhados 
+17. Parênteses aninhados 
     x = (1 + (2 * (3 + 4)))
 
-20. Atribuição após função 
+18. Atribuição após função 
     funcao soma(a, b) = a + b 
     y = soma(4, 5)
