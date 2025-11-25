@@ -60,6 +60,31 @@ g++ -std=c++20 -Wall -Wextra -O2 -Iinclude src/*.cpp -o MiniCompilador
 ./MiniCompilador
 ```
 
+# Definição da gramática
+
+## Declaração de variáveis
+
+A declaração de variáveis segue o padrão: `nome_variável = expressão`
+
+### Exemplo
+
+```
+x = 10      // declaração da variável 'x'
+y = 15.8    // declaração da variável 'y'
+z = x + y   // declaração da variável 'z' e atribuição dos valores
+```
+
+## Declaração e chamada de Funções
+
+A declaração de funções segue o padrão: `funcao nome_função(parâmetros) = expressão`
+
+### Exemplo
+
+```
+funcao soma(a, b) = a + b  // declaração da função com sua expressão
+resultado = soma(10, 15)   // chamada da função em uma variável
+```
+
 # Arquitetura do Compilador
 
 O projeto utiliza cinco grandes módulos:
@@ -185,7 +210,7 @@ Usa tabela de símbolos com suporte a escopo.
 
 Se algo estiver errado, lança `std::runtime_error`
 
-## 6. Geração de Código
+## 6. Geração de Código (`codegen.h` / `codegen.cpp`)
 
 Gera código intermediário em três endereços, por exemplo:
 
@@ -223,7 +248,7 @@ obs: `t1 = call soma 2` o número 2 representa a quantidade de argumentos retorn
 | `printCode()`            | Exibe no console todas as linhas de código intermediário já emitidas.        |
 | `getCodeLines()`         | Retorna a lista completa de instruções geradas para uso externo.             |
 
-## 7. Interpretador
+## 7. Interpretador (`interpreter.h` / `interpreter.cpp`)
 
 Executa o código intermediário linha por linha.
 
