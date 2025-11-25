@@ -40,10 +40,20 @@ Entre no diretório do projeto:
 cd MiniCompilador
 ```
 
-### Windows
+### Windows (MinGW)
 
 ``` bash
 g++ -std=c++20 -Wall -Wextra -O2 -Iinclude src/*.cpp -o MiniCompilador.exe
+```
+
+``` bash
+./MiniCompilador.exe
+```
+
+### Windows (MinGW sem MSYS2)
+
+``` bash
+g++ -std=c++20 -Wall -Wextra -O2 -Iinclude src\*.cpp -o MiniCompilador.exe
 ```
 
 ``` bash
