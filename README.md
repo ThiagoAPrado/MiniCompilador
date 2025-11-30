@@ -28,7 +28,7 @@ Código → Lexer → Tokens → Parser → AST → Semântico → Codegen → E
 
 ## Requisitos
 
-- **C++17** ou superior
+- **C++20** ou superior
 - **g++** no Linux
 - **MinGW** ou **Clang** no Windows
 
@@ -37,7 +37,7 @@ Código → Lexer → Tokens → Parser → AST → Semântico → Codegen → E
 Entre no diretório do projeto:
 
 ``` bash
-cd MiniCompilador
+cd MiniCompilador-main
 ```
 
 ### Windows (MinGW)
